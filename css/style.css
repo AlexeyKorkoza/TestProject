@@ -1,0 +1,12 @@
+@import url("../node_modules/bootstrap/dist/css/bootstrap.min.css");
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#map {
+  height: 92%;
+  width: 100%;
+}

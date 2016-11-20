@@ -1,0 +1,9 @@
+<div class="form-group">
+    <label for="sel1">Выберите тип места:</label>
+    <select class="form-control" id="sel1" ng-model="selectedCar"
+            ng-options="option.type for option in selects"
+            ng-change="getScoreData(selectedCar)">
+        <option value="">Все места</option>
+    </select>
+</div>
+<div id="map"></div>
