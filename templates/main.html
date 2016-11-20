@@ -1,8 +1,8 @@
 <div class="form-group">
-    <label for="sel1">Выберите тип места:</label>
-    <select class="form-control" id="sel1" ng-model="selectedCar"
-            ng-options="option.type for option in selects"
-            ng-change="getScoreData(selectedCar)">
+    <label for="select">Выберите тип места:</label>
+    <select class="form-control" id="select" ng-model="name_type"
+            ng-options="option.name_type for option in select"
+            ng-change="getScoreData(name_type)">
         <option value="">Все места</option>
     </select>
 </div>

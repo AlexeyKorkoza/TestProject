@@ -1,7 +1,7 @@
 'use strict';
 
 var myApp = angular.module('myApp');
-myApp.controller('mainCtrl', function ($scope, $http) {
+myApp.controller('mainCtrl', function ($scope) {
 
   var map = L.map('map').setView([53.6834599, 23.8342648], 13);
   L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -22,7 +22,7 @@ myApp.controller('mainCtrl', function ($scope, $http) {
       url: '../../server.php',
       type: 'POST',
       data: {
-        all: 'all'
+        'allTypes': 'allTypes'
       },
       success: function (response) {
         $scope.select = response.types;
