@@ -20,6 +20,21 @@ if(isset($_POST['allTypes'])){
     }
     $out = '{"types":['.$out.']}';
 }
+
+if(isset($_POST['allPlaces'])){
+    $result = $con->query("SELECT DISTINCT * FROM places");
+    while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
+        if ($out != "") {$out .= ",";}
+            $out .= '{"id_place":"'  . $rs["id_place"] . '",';
+            $out .= '"name_place":"'   . $rs["name_place"]        . '",';
+            $out .= '"description":"'   . $rs["description"]        . '",';
+            $out .= '"coordinateX":"'   . $rs["coordinateX"]        . '",';
+            $out .= '"coordinateY":"'   . $rs["coordinateY"]        . '",';
+            $out .= '"address":"'   . $rs["address"]        . '",';
+            $out .= '"id_type":"'. $rs["id_type"]     . '"}';
+    }
+    $out = '{"places":['.$out.']}';
+}
 $con->close();
 echo($out);
 ?>
