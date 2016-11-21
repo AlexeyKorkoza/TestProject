@@ -42,8 +42,8 @@ myApp.controller('mainCtrl', function ($scope) {
       },
       success: function (response) {
         for (var i = 0; i < response.places.length; i++) {
-          var image = $scope.select[response.places[i].id_type - 1].marker_img;
-          var iconPlace = new LeafIcon({iconUrl: "img/" + image + ".png"});
+          var nameOfImage = $scope.select[response.places[i].id_type - 1].marker_img;
+          var iconPlace = new LeafIcon({iconUrl: "img/" + nameOfImage + ".png"});
           var marker = L.marker([response.places[i].coordinateX, response.places[i].coordinateY],
             {icon: iconPlace}).bindPopup(response.places[i].description).addTo(map);
           markers.addLayer(marker);
