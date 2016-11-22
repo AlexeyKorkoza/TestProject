@@ -41,14 +41,7 @@ myApp.controller('mainCtrl', function ($scope) {
         'allPlaces': 'allPlaces'
       },
       success: function (response) {
-        for (var i = 0; i < response.places.length; i++) {
-          var nameOfImage = $scope.select[response.places[i].id_type - 1].marker_img;
-          var iconPlace = new LeafIcon({iconUrl: "img/" + nameOfImage + ".png"});
-          var marker = L.marker([response.places[i].coordinateX, response.places[i].coordinateY],
-            {icon: iconPlace}).bindPopup(response.places[i].description).addTo(map);
-          markers.addLayer(marker);
-        }
-        map.addLayer(markers);
+        addPlaceInMap(response);
       },
       error: function (response) {
         console.log(response);
@@ -56,22 +49,38 @@ myApp.controller('mainCtrl', function ($scope) {
     });
   }
 
+  function addPlaceInMap(response) {
+    for (var i = 0; i < response.places.length; i++) {
+      var nameOfImage = $scope.select[response.places[i].id_type - 1].marker_img;
+      var iconPlace = new LeafIcon({iconUrl: "img/" + nameOfImage + ".png"});
+      var marker = L.marker([response.places[i].coordinateX, response.places[i].coordinateY],
+        {icon: iconPlace}).bindPopup(response.places[i].description).addTo(map);
+      markers.addLayer(marker);
+    }
+    map.addLayer(markers);
+  }
+
   getAllTypes();
   getAllPlaces();
 
-  function getDataByTypeAjax(type) {
-    $.ajax({
-      url: '../../server.php',
-      type: 'POST',
-      data: {
-        'type': type
-      },
-      success: function (response) {
-        console.log(response);
-      },
-      error: function (response) {
-        console.log(response);
-      }
-    });
+  $scope.getByType = function (type) {
+    if (type === "") {
+      getAllPlaces();
+    } else {
+      markers.clearLayers();
+      $.ajax({
+        url: '../../server.php',
+        type: 'POST',
+        data: {
+          'type': type
+        },
+        success: function (response) {
+          addPlaceInMap(response);
+        },
+        error: function (response) {
+          console.log(response);
+        }
+      });
+    }
   }
 });
