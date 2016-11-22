@@ -1,10 +1,14 @@
-<div class="form-group">
-    <label for="select">Выберите тип места:</label>
-    <select class="form-control" id="select" ng-model="type" ng-change="getByType(type)">
-        <option value="" >Все места</option>
-        <option ng-repeat="option in select"
-                value="{{option.id_type}}"
-                >{{option.name_type}}</option>
-    </select>
+<div class="form-group" id="select">
+    <div class="row">
+        <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4">
+            <select class="form-control" ng-model="type" ng-change="getByType(type)">
+                <option value="">Все объекты</option>
+                <option ng-repeat="option in select"
+                        value="{{option.id_type}}"
+                >{{option.name_type}}
+                </option>
+            </select>
+        </div>
+    </div>
 </div>
 <div id="map"></div>
