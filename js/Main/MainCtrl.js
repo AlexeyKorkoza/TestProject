@@ -52,9 +52,11 @@ myApp.controller('mainCtrl', function ($scope) {
   function addPlaceInMap(response) {
     for (var i = 0; i < response.places.length; i++) {
       var nameOfImage = $scope.select[response.places[i].id_type - 1].marker_img;
+      var typeOfPlace = $scope.select[response.places[i].id_type - 1].name_type;
       var iconPlace = new LeafIcon({iconUrl: "img/" + nameOfImage + ".png"});
       var marker = L.marker([response.places[i].coordinateX, response.places[i].coordinateY],
-        {icon: iconPlace}).bindPopup(response.places[i].description).addTo(map);
+        {icon: iconPlace}).bindPopup("<b>\"" + response.places[i].name_place + "\",</b> " + typeOfPlace + "<br>" +
+        response.places[i].address).openPopup().addTo(map);
       markers.addLayer(marker);
     }
     map.addLayer(markers);
