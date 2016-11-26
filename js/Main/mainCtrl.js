@@ -1,7 +1,9 @@
 'use strict';
 
 var myApp = angular.module('myApp');
-myApp.controller('MainController', function ($scope) {
+myApp.controller('mainCtrl', function ($scope) {
+
+  $scope.allMarkers = {};
 
   angular.extend($scope, {
     grodno: {
@@ -18,8 +20,18 @@ myApp.controller('MainController', function ($scope) {
         }
       }
     },
-    markers: $scope.markers
+    markers: $scope.allMarkers
   });
+
+  function iconOfPlace(type) {
+    var icon = {
+      iconUrl: "../../img/"+ type +".png",
+      iconSize:     [25, 25],
+      iconAnchor:   [12, 12],
+      popupAnchor:  [0, 0]
+    };
+    return icon;
+  }
 
   getAllTypes();
   getAllPlaces();
@@ -33,7 +45,6 @@ myApp.controller('MainController', function ($scope) {
       },
       success: function (response) {
         $scope.select = response.types;
-        console.log($scope.select);
       },
       error: function (response) {
         console.log(response);
@@ -58,31 +69,25 @@ myApp.controller('MainController', function ($scope) {
   }
 
   function addPlaceInMap(response) {
-    $scope.markers = new Array();
-    for (var i = 0; i < response.places.length; i++) {
-      $scope.markers.push({
-        lat: response.places[i].coordinateX,
-        lng: response.places[i].coordinateY,
-        draggable: true
-      });
-
-      /*var nameOfImage = $scope.select[response.places[i].id_type - 1].marker_img;
-      var typeOfPlace = $scope.select[response.places[i].id_type - 1].name_type;
-      var iconPlace = new LeafIcon({iconUrl: "img/" + nameOfImage + ".png"});*/
-     /* var marker = L.marker([response.places[i].coordinateX, response.places[i].coordinateY],
-        {icon: iconPlace}).bindPopup("<b>\"" + response.places[i].name_place + "\",</b> " + typeOfPlace + "<br>" +
-        response.places[i].address).openPopup().addTo(map);*/
-     /* markers.addLayer(marker);*/
-    }
-    console.log($scope.markers);
-    /*map.addLayer(markers);*/
+    response.places.forEach(function (item) {
+      var nameOfImage = $scope.select[item['id_type'] - 1].marker_img;
+      var typeOfPlace = $scope.select[item['id_type'] - 1].name_type;
+      $scope.allMarkers[item['id_place'] - 1] = {
+        lat: parseFloat(item['coordinateX']),
+        lng: parseFloat(item['coordinateY']),
+        message: item['name_place'],
+        draggable: true,
+        icon: iconOfPlace(nameOfImage),
+        focus: false
+      }
+    });
   }
 
   $scope.getByType = function (type) {
     if (type === "") {
       getAllPlaces();
     } else {
-      markers.clearLayers();
+      $scope.allMarkers = {};
       $.ajax({
         url: '../../server.php',
         type: 'POST',
