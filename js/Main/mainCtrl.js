@@ -3,7 +3,7 @@
 var myApp = angular.module('myApp');
 myApp.controller('mainCtrl', function ($scope) {
 
-  $scope.allMarkers = {};
+  document.getElementById("map").style.height = window.innerHeight + "px";
 
   angular.extend($scope, {
     grodno: {
@@ -19,18 +19,16 @@ myApp.controller('mainCtrl', function ($scope) {
           url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         }
       }
-    },
-    markers: $scope.allMarkers
+    }
   });
 
   function iconOfPlace(type) {
-    var icon = {
+    return {
       iconUrl: "../../img/"+ type +".png",
       iconSize:     [25, 25],
       iconAnchor:   [12, 12],
       popupAnchor:  [0, 0]
     };
-    return icon;
   }
 
   getAllTypes();
@@ -69,17 +67,22 @@ myApp.controller('mainCtrl', function ($scope) {
   }
 
   function addPlaceInMap(response) {
+    $scope.markers = {};
     response.places.forEach(function (item) {
       var nameOfImage = $scope.select[item['id_type'] - 1].marker_img;
       var typeOfPlace = $scope.select[item['id_type'] - 1].name_type;
-      $scope.allMarkers[item['id_place'] - 1] = {
+      $scope.markers[item['id_place'] - 1] = {
         lat: parseFloat(item['coordinateX']),
         lng: parseFloat(item['coordinateY']),
-        message: item['name_place'],
+        message: "<b>\"" + item['name_place'] + "\",</b> " + typeOfPlace + "<br>" +
+        item['address'],
         draggable: true,
         icon: iconOfPlace(nameOfImage),
         focus: false
       }
+    });
+    angular.extend($scope, {
+      markers: $scope.markers
     });
   }
 
@@ -87,7 +90,6 @@ myApp.controller('mainCtrl', function ($scope) {
     if (type === "") {
       getAllPlaces();
     } else {
-      $scope.allMarkers = {};
       $.ajax({
         url: '../../server.php',
         type: 'POST',
