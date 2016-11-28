@@ -18,11 +18,10 @@
   "homepage": "https://github.com/AlexeyKorkoza/TestProject#readme",
   "dependencies": {
     "angular": "^1.5.8",
-    "angular-leaflet-directive": "^0.10.0",
     "angular-route": "^1.5.8",
     "bootstrap": "^3.3.7",
     "jquery": "^3.1.1",
-    "leaflet": "^1.0.1",
+    "leaflet": "^1.0.2",
     "normalize.css": "^5.0.0"
   }
 }
