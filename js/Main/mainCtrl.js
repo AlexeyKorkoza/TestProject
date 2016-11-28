@@ -20,6 +20,8 @@ myApp.controller('mainCtrl', function ($scope) {
   });
   var markers = new L.FeatureGroup();
 
+  getAllTypes();
+
   function getAllTypes() {
     $.ajax({
       url: '../../server.php',
@@ -35,6 +37,8 @@ myApp.controller('mainCtrl', function ($scope) {
       }
     });
   }
+
+  getAllPlaces();
 
   function getAllPlaces() {
     $.ajax({
@@ -62,9 +66,6 @@ myApp.controller('mainCtrl', function ($scope) {
     }
     map.addLayer(markers);
   }
-
-  getAllTypes();
-  getAllPlaces();
 
   $scope.getByType = function (type) {
     if (type === "") {
