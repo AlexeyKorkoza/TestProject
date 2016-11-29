@@ -21,6 +21,7 @@ myApp.controller('mainCtrl', function ($scope) {
   var markers = new L.FeatureGroup();
 
   getAllTypes();
+  getAllPlaces();
 
   function getAllTypes() {
     $.ajax({
@@ -37,8 +38,6 @@ myApp.controller('mainCtrl', function ($scope) {
       }
     });
   }
-
-  getAllPlaces();
 
   function getAllPlaces() {
     $.ajax({
