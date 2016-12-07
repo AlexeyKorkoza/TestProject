@@ -11,6 +11,7 @@ myApp.controller('mainCtrl', function ($scope) {
     attribution: '',
     maxZoom: 18
   }).addTo(map);
+
   var LeafIcon = L.Icon.extend({
     options: {
       iconSize: [24, 24],
@@ -19,6 +20,15 @@ myApp.controller('mainCtrl', function ($scope) {
     }
   });
   var markers = new L.FeatureGroup();
+
+  $scope.myConfig = {
+    create: true,
+    valueField: 'value',
+    labelField: 'text',
+    delimiter: '|',
+    placeholder: 'Выберите тип объекта',
+    maxItems: 1
+  };
 
   getAllTypes();
   getAllPlaces();
@@ -32,7 +42,18 @@ myApp.controller('mainCtrl', function ($scope) {
       },
       async: false,
       success: function (response) {
-        $scope.select = response.types;
+        $scope.getData = response.types;
+        $scope.select = [];
+        $scope.select.push({
+          value: 0,
+          text: "Все объекты"
+        });
+        for(var i = 0; i < response.types.length; i++){
+          $scope.select.push({
+            value: response.types[i].id_type,
+            text: response.types[i].name_type
+          })
+        }
       },
       error: function (response) {
         console.log(response);
@@ -59,8 +80,8 @@ myApp.controller('mainCtrl', function ($scope) {
 
   function addPlaceInMap(response) {
     for (var i = 0; i < response.places.length; i++) {
-      var nameOfImage = $scope.select[response.places[i].id_type - 1].marker_img;
-      var typeOfPlace = $scope.select[response.places[i].id_type - 1].name_type;
+      var nameOfImage = $scope.getData[response.places[i].id_type - 1].marker_img;
+      var typeOfPlace = $scope.getData[response.places[i].id_type - 1].name_type;
       var iconPlace = new LeafIcon({iconUrl: "img/" + nameOfImage + ".png"});
       var marker = L.marker([response.places[i].coordinateX, response.places[i].coordinateY],
         {icon: iconPlace}).bindPopup("<b>\"" + response.places[i].name_place + "\",</b> " + typeOfPlace + "<br>" +
@@ -71,7 +92,7 @@ myApp.controller('mainCtrl', function ($scope) {
   }
 
   $scope.getByType = function (type) {
-    if (type === "") {
+    if (type === "0") {
       getAllPlaces();
     } else {
       markers.clearLayers();
