@@ -35,8 +35,7 @@ gulp.task('scripts', function () {
     .on('error', console.log)
     .pipe(concat('build.js'))
     .pipe(jscpd())
-    .pipe(gulp.dest('./build/'))
-    .pipe(connect.reload());
+    .pipe(gulp.dest('./build/'));
 });
 
 gulp.task('styles', function () {
@@ -55,8 +54,7 @@ gulp.task('styles', function () {
     .pipe(cssmin())
     .pipe(csslint())
     .pipe(concat('build.css'))
-    .pipe(gulp.dest('./build/'))
-    .pipe(connect.reload());
+    .pipe(gulp.dest('./build/'));
 });
 
 gulp.task('watch', function () {
