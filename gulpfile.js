@@ -29,6 +29,7 @@ gulp.task('scripts', function () {
     'node_modules/leaflet/dist/leaflet.js',
     'node_modules/bootstrap/dist/js/bootstrap.min.js',
     'node_modules/angular-selectize2/dist/selectize.js',
+    'node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.min.js',
     './js/*.js',
     './js/Main/*.js'
   ])
@@ -44,7 +45,8 @@ gulp.task('styles', function () {
     'node_modules/normalize.css/normalize.css',
     'css/*.css',
     'node_modules/leaflet/dist/leaflet.css',
-    'node_modules/selectize/dist/css/selectize.default.css'
+    'node_modules/selectize/dist/css/selectize.default.css',
+    'node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css'
   ])
     .on('error', console.log)
     .pipe(autoprefixer({
