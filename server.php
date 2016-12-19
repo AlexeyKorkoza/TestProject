@@ -8,66 +8,89 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 $con = mysqli_connect($host,$user,$password,$database);
-$out = "";
+$out = array();
+$jsondecode = json_decode(file_get_contents("php://input"));
+if($jsondecode->allTypes =='allTypes') {
 
-if(isset($_POST['allTypes'])){
-    $result = $con->query("SELECT * FROM types");
-    while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
-        if ($out != "") {$out .= ",";}
-            $out .= '{"id_type":"'  . $rs["id_type"] . '",';
-            $out .= '"name_type":"'   . $rs["name_type"]        . '",';
-            $out .= '"marker_img":"'. $rs["marker_img"]     . '"}';
+    if($result = mysqli_query($con,"SELECT * FROM types"))
+    {
+      $count = mysqli_num_rows($result);
+
+      $cr = 0;
+      while($row = mysqli_fetch_assoc($result))
+      {
+          $out[$cr]['id_type']    = $row['id_type'];
+          $out[$cr]['name_type']  = $row['name_type'];
+          $out[$cr]['marker_img'] = $row['marker_img'];
+          $cr++;
+      }
     }
-    $out = '{"types":['.$out.']}';
 }
 
-if(isset($_POST['allPlaces'])){
-    $result = $con->query("SELECT DISTINCT * FROM places");
-    while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
-        if ($out != "") {$out .= ",";}
-            $out .= '{"id_place":"'  . $rs["id_place"] . '",';
-            $out .= '"name_place":"'   . $rs["name_place"]        . '",';
-            $out .= '"description":"'   . $rs["description"]        . '",';
-            $out .= '"coordinateX":"'   . $rs["coordinateX"]        . '",';
-            $out .= '"coordinateY":"'   . $rs["coordinateY"]        . '",';
-            $out .= '"address":"'   . $rs["address"]        . '",';
-            $out .= '"id_type":"'. $rs["id_type"]     . '"}';
-    }
-    $out = '{"places":['.$out.']}';
+if($jsondecode->allPlaces =='allPlaces'){
+
+    if($result = mysqli_query($con,"SELECT DISTINCT * FROM places"))
+        {
+          $count = mysqli_num_rows($result);
+
+          $cr = 0;
+          while($row = mysqli_fetch_assoc($result))
+          {
+              $out[$cr]['id_place']    = $row['id_place'];
+              $out[$cr]['name_place']  = $row['name_place'];
+              $out[$cr]['description'] = $row['description'];
+              $out[$cr]['coordinateX']    = $row['coordinateX'];
+              $out[$cr]['coordinateY']  = $row['coordinateY'];
+              $out[$cr]['address'] = $row['address'];
+              $out[$cr]['id_type'] = $row['id_type'];
+              $cr++;
+          }
+     }
 }
 
-if(isset($_POST['type'])){
-    $type = $_POST['type'];
-    $result = $con->query("SELECT DISTINCT * FROM places WHERE id_type = $type");
-    while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
-        if ($out != "") {$out .= ",";}
-            $out .= '{"id_place":"'  . $rs["id_place"] . '",';
-            $out .= '"name_place":"'   . $rs["name_place"]        . '",';
-            $out .= '"description":"'   . $rs["description"]        . '",';
-            $out .= '"coordinateX":"'   . $rs["coordinateX"]        . '",';
-            $out .= '"coordinateY":"'   . $rs["coordinateY"]        . '",';
-            $out .= '"address":"'   . $rs["address"]        . '",';
-            $out .= '"id_type":"'. $rs["id_type"]     . '"}';
-    }
-    $out = '{"places":['.$out.']}';
+if($jsondecode->type){
+    $type = $jsondecode->type;
+    if($result = mysqli_query($con,"SELECT DISTINCT * FROM places WHERE id_type = $type"))
+            {
+              $count = mysqli_num_rows($result);
+
+              $cr = 0;
+              while($row = mysqli_fetch_assoc($result))
+              {
+                  $out[$cr]['id_place']    = $row['id_place'];
+                  $out[$cr]['name_place']  = $row['name_place'];
+                  $out[$cr]['description'] = $row['description'];
+                  $out[$cr]['coordinateX']    = $row['coordinateX'];
+                  $out[$cr]['coordinateY']  = $row['coordinateY'];
+                  $out[$cr]['address'] = $row['address'];
+                  $out[$cr]['id_type'] = $row['id_type'];
+                  $cr++;
+              }
+         }
 }
 
-if(isset($_POST['chooseIdPlace'])){
-    $chooseIdPlace = $_POST['chooseIdPlace'];
-    $result = $con->query("SELECT DISTINCT * FROM places WHERE id_place = $chooseIdPlace");
-    while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
-        if ($out != "") {$out .= ",";}
-            $out .= '{"id_place":"'  . $rs["id_place"] . '",';
-            $out .= '"name_place":"'   . $rs["name_place"]        . '",';
-            $out .= '"description":"'   . $rs["description"]        . '",';
-            $out .= '"coordinateX":"'   . $rs["coordinateX"]        . '",';
-            $out .= '"coordinateY":"'   . $rs["coordinateY"]        . '",';
-            $out .= '"address":"'   . $rs["address"]        . '",';
-            $out .= '"id_type":"'. $rs["id_type"]     . '"}';
-    }
-    $out = '{"chooseIdPlace":['.$out.']}';
+if($jsondecode->chooseIdPlace){
+    $chooseIdPlace = $jsondecode->chooseIdPlace;
+    if($result = mysqli_query($con,"SELECT DISTINCT * FROM places WHERE id_place = $chooseIdPlace"))
+                {
+                  $count = mysqli_num_rows($result);
+
+                  $cr = 0;
+                  while($row = mysqli_fetch_assoc($result))
+                  {
+                      $out[$cr]['id_place']    = $row['id_place'];
+                      $out[$cr]['name_place']  = $row['name_place'];
+                      $out[$cr]['description'] = $row['description'];
+                      $out[$cr]['coordinateX']    = $row['coordinateX'];
+                      $out[$cr]['coordinateY']  = $row['coordinateY'];
+                      $out[$cr]['address'] = $row['address'];
+                      $out[$cr]['id_type'] = $row['id_type'];
+                      $cr++;
+                  }
+             }
 }
 
-$con->close();
-echo($out);
+$json = json_encode($out);
+echo $json;
+
 ?>

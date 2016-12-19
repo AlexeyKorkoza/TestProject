@@ -1,7 +1,7 @@
 'use strict';
 
 var myApp = angular.module('myApp');
-myApp.controller('mainCtrl', function ($scope) {
+myApp.controller('mainCtrl', function ($scope, $http) {
 
   document.getElementById('init_map').innerHTML = "<div id='map'></div>";
   document.getElementById("map").style.height = window.innerHeight + "px";
@@ -22,6 +22,8 @@ myApp.controller('mainCtrl', function ($scope) {
   var markers = new L.FeatureGroup();
   var routing = L.Routing.control({});
 
+  $scope.getData = '';
+
   $scope.myConfig = {
     create: true,
     valueField: 'value',
@@ -31,53 +33,53 @@ myApp.controller('mainCtrl', function ($scope) {
     maxItems: 1
   };
 
-  getAllTypes();
-  getAllPlaces();
-
-  function getAllTypes() {
-    $.ajax({
-      url: '../../server.php',
-      type: 'POST',
+  $scope.getAllTypes = function () {
+    $http({
+      url: 'server.php',
+      method: 'post',
       data: {
         'allTypes': 'allTypes'
       },
-      async: false,
-      success: function (response) {
-        $scope.getData = response.types;
+      headers: {'Content-Type': 'application/json'}
+    }).then(
+      function Success(response) {
+        $scope.getData = response.data;
         $scope.select = [];
         $scope.select.push({
           value: 0,
           text: "Все объекты"
         });
-        for (var i = 0; i < response.types.length; i++) {
+        for (var i = 0; i < response.data.length; i++) {
           $scope.select.push({
-            value: response.types[i].id_type,
-            text: response.types[i].name_type
+            value: response.data[i].id_type,
+            text: response.data[i].name_type
           })
         }
       },
-      error: function (response) {
+      function myError(response) {
         console.log(response);
-      }
-    });
-  }
+      });
+  };
 
-  function getAllPlaces() {
-    $.ajax({
-      url: '../../server.php',
-      type: 'POST',
+  $scope.getAllPlaces = function () {
+    $http({
+      url: 'server.php',
+      method: 'post',
       data: {
         'allPlaces': 'allPlaces'
       },
-      async: false,
-      success: function (response) {
+      headers: {'Content-Type': 'application/json'}
+    }).then(
+      function Success(response) {
         addPlaceInMap(response);
       },
-      error: function (response) {
+      function Error(response) {
         console.log(response);
-      }
-    });
-  }
+      });
+  };
+
+  $scope.getAllTypes();
+  $scope.getAllPlaces();
 
   function getDirection(currentLat, currentLon) {
     map.removeControl(routing);
@@ -93,14 +95,14 @@ myApp.controller('mainCtrl', function ($scope) {
   }
 
   function addPlaceInMap(response) {
-    for (var i = 0; i < response.places.length; i++) {
-      var nameOfImage = $scope.getData[response.places[i].id_type - 1].marker_img;
-      var typeOfPlace = $scope.getData[response.places[i].id_type - 1].name_type;
-      var id_place = response.places[i].id_place;
+    for (var i = 0; i < response.data.length; i++) {
+      var nameOfImage = $scope.getData[response.data[i].id_type - 1].marker_img;
+      var typeOfPlace = $scope.getData[response.data[i].id_type - 1].name_type;
+      var id_place = response.data[i].id_place;
       var iconPlace = new LeafIcon({iconUrl: "img/" + nameOfImage + ".png"});
-      var marker = L.marker([response.places[i].coordinateX, response.places[i].coordinateY],
-        {icon: iconPlace}).bindPopup("<b>\"" + response.places[i].name_place + "\",</b> " + typeOfPlace + "<br>" +
-        response.places[i].address + "<br/>" + "<button class='getDirectionBtn' id=id_place_" + id_place + ">Получить направление</button>").openPopup().addTo(map);
+      var marker = L.marker([response.data[i].coordinateX, response.data[i].coordinateY],
+        {icon: iconPlace}).bindPopup("<b>\"" + response.data[i].name_place + "\",</b> " + typeOfPlace + "<br>" +
+        response.data[i].address + "<br/>" + "<button class='getDirectionBtn' id=id_place_" + id_place + ">Получить направление</button>").openPopup().addTo(map);
       markers.addLayer(marker);
     }
     map.addLayer(markers);
@@ -108,22 +110,23 @@ myApp.controller('mainCtrl', function ($scope) {
 
   $scope.getByType = function (type) {
     if (type === "0") {
-      getAllPlaces();
+      $scope.getAllPlaces();
     } else {
       markers.clearLayers();
-      $.ajax({
-        url: '../../server.php',
-        type: 'POST',
+      $http({
+        url: 'server.php',
+        method: 'post',
         data: {
           'type': type
         },
-        success: function (response) {
+        headers: {'Content-Type': 'application/json'}
+      }).then(
+        function Success(response) {
           addPlaceInMap(response);
         },
-        error: function (response) {
+        function Error(response) {
           console.log(response);
-        }
-      });
+        });
     }
   };
 
@@ -132,20 +135,20 @@ myApp.controller('mainCtrl', function ($scope) {
     $(".getDirectionBtn").on("click", function (e) {
       var arr = e.target.id.split('_');
       var chooseIdPlace = arr[2];
-      $.ajax({
-        async: false,
-        url: '../../server.php',
-        type: 'POST',
+      $http({
+        url: 'server.php',
+        method: 'post',
         data: {
           'chooseIdPlace': chooseIdPlace
         },
-        success: function (response) {
-          getDirection(response.chooseIdPlace[0].coordinateX, response.chooseIdPlace[0].coordinateY);
+        headers: {'Content-Type': 'application/json'}
+      }).then(
+        function Success(response) {
+          getDirection(response.data[0].coordinateX, response.data[0].coordinateY);
         },
-        error: function (response) {
+        function Error(response) {
           console.log(response);
-        }
-      });
+        });
     });
   });
 });
