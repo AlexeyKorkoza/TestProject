@@ -57,7 +57,16 @@ myApp.controller('mainCtrl', function ($scope, $http) {
         }
       },
       function myError(response) {
-        console.log(response);
+        swal({
+          title: "Данные с сервера не загрузились!",
+          text: '<span style="color:#F8BB86">Пожалуйста, обновите страницу<span>',
+          confirmButtonText: "Обновить страницу",
+          html: true
+        },function(isConfirm){
+          if (isConfirm) {
+            location.reload();
+          }
+        });
       });
   };
 
@@ -74,7 +83,16 @@ myApp.controller('mainCtrl', function ($scope, $http) {
         addPlaceInMap(response);
       },
       function Error(response) {
-        console.log(response);
+        swal({
+          title: "Данные с сервера не загрузились!",
+          text: '<span style="color:#F8BB86">Пожалуйста, обновите страницу<span>',
+          confirmButtonText: "Обновить страницу",
+          html: true
+        },function(isConfirm){
+          if (isConfirm) {
+            location.reload();
+          }
+        });
       });
   };
 
@@ -95,17 +113,30 @@ myApp.controller('mainCtrl', function ($scope, $http) {
   }
 
   function addPlaceInMap(response) {
-    for (var i = 0; i < response.data.length; i++) {
-      var nameOfImage = $scope.getData[response.data[i].id_type - 1].marker_img;
-      var typeOfPlace = $scope.getData[response.data[i].id_type - 1].name_type;
-      var id_place = response.data[i].id_place;
-      var iconPlace = new LeafIcon({iconUrl: "img/" + nameOfImage + ".png"});
-      var marker = L.marker([response.data[i].coordinateX, response.data[i].coordinateY],
-        {icon: iconPlace}).bindPopup("<b>\"" + response.data[i].name_place + "\",</b> " + typeOfPlace + "<br>" +
-        response.data[i].address + "<br/>" + "<button class='getDirectionBtn' id=id_place_" + id_place + ">Получить направление</button>").openPopup().addTo(map);
-      markers.addLayer(marker);
+    if($scope.getData !== '') {
+      for (var i = 0; i < response.data.length; i++) {
+        var nameOfImage = $scope.getData[response.data[i].id_type - 1].marker_img;
+        var typeOfPlace = $scope.getData[response.data[i].id_type - 1].name_type;
+        var id_place = response.data[i].id_place;
+        var iconPlace = new LeafIcon({iconUrl: "img/" + nameOfImage + ".png"});
+        var marker = L.marker([response.data[i].coordinateX, response.data[i].coordinateY],
+          {icon: iconPlace}).bindPopup("<b>\"" + response.data[i].name_place + "\",</b> " + typeOfPlace + "<br>" +
+          response.data[i].address + "<br/>" + "<button class='getDirectionBtn' id=id_place_" + id_place + ">Проложить маршрут</button>").openPopup().addTo(map);
+        markers.addLayer(marker);
+      }
+      map.addLayer(markers);
+    } else {
+      swal({
+        title: "Данные с сервера не загрузились!",
+        text: '<span style="color:#F8BB86">Пожалуйста, обновите страницу<span>',
+        confirmButtonText: "Обновить страницу",
+        html: true
+      },function(isConfirm){
+        if (isConfirm) {
+          location.reload();
+        }
+      });
     }
-    map.addLayer(markers);
   }
 
   $scope.getByType = function (type) {
