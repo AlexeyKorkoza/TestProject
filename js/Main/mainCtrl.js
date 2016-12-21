@@ -83,8 +83,8 @@ myApp.controller('mainCtrl', function ($scope, $http) {
 
   function getDirection(currentLat, currentLon) {
     map.removeControl(routing);
-    var geoLat = geoip_latitude();
-    var geoLon = geoip_longitude();
+    var geoLat = geoplugin_latitude();
+    var geoLon = geoplugin_longitude();
     routing = L.Routing.control({
       waypoints: [
         L.latLng(geoLat, geoLon),
