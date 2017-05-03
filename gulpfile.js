@@ -23,16 +23,16 @@ gulp.task('browser-sync', function() {
 gulp.task('scripts', function () {
   return gulp.src([
     'node_modules/jquery/dist/jquery.min.js',
-    'node_modules/selectize/dist/js/standalone/selectize.min.js',
+    'node_modules/selectize/dist/main/standalone/selectize.min.js',
     'node_modules/angular/angular.min.js',
     'node_modules/angular-route/angular-route.min.js',
     'node_modules/leaflet/dist/leaflet.js',
-    'node_modules/bootstrap/dist/js/bootstrap.min.js',
+    'node_modules/bootstrap/dist/main/bootstrap.min.js',
     'node_modules/angular-selectize2/dist/selectize.js',
     'node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.min.js',
     'node_modules/sweetalert/dist/sweetalert.min.js',
-    './js/*.js',
-    './js/Main/*.js'
+    './main/*.js',
+    './main/Main/*.js'
   ])
     .on('error', console.log)
     .pipe(concat('build.js'))
@@ -63,8 +63,8 @@ gulp.task('styles', function () {
 
 gulp.task('watch', function () {
   gulp.watch(['css/*'], ['styles']);
-  gulp.watch(['js/*'], ['scripts']);
-  gulp.watch(['js/*.js', 'js/Main/*.js'], ['jshint']);
+  gulp.watch(['main/*'], ['scripts']);
+  gulp.watch(['main/*.js', 'main/Main/*.js'], ['jshint']);
 });
 
 gulp.task('default', ['scripts', 'styles', 'watch', 'browser-sync']);
