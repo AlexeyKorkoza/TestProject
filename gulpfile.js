@@ -2,22 +2,22 @@
 
 var gulp = require('gulp'),
   watch = require('gulp-watch'),
+  browserSync = require('browser-sync'),
   autoprefixer = require('gulp-autoprefixer'),
   uglify = require('gulp-uglify'),
   cssmin = require('gulp-minify-css'),
   refresh = require('gulp-livereload'),
   concat = require('gulp-concat'),
   csslint = require('gulp-csslint'),
-  jscpd = require('gulp-jscpd'),
-  jshint = require('gulp-jshint');
+  jscpd = require('gulp-jscpd');
 
-gulp.task('jshint', function () {
-  return gulp.src([
-    './js/*.js',
-    './js/Main/*.js'
-  ])
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'))
+gulp.task('browser-sync', function() {
+  browserSync({
+    server: {
+      baseDir: ''
+    },
+    notify: false
+  });
 });
 
 gulp.task('scripts', function () {
@@ -67,4 +67,4 @@ gulp.task('watch', function () {
   gulp.watch(['js/*.js', 'js/Main/*.js'], ['jshint']);
 });
 
-gulp.task('default', ['scripts', 'styles', 'watch', 'jshint']);
+gulp.task('default', ['scripts', 'styles', 'watch', 'browser-sync']);
