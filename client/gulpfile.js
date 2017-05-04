@@ -7,7 +7,6 @@ var gulp = require('gulp'),
   del = require('del'),
   uglify = require('gulp-uglify'),
   cssmin = require('gulp-minify-css'),
-  refresh = require('gulp-livereload'),
   concat = require('gulp-concat'),
   csslint = require('gulp-csslint'),
   jscpd = require('gulp-jscpd');
@@ -24,16 +23,16 @@ gulp.task('browser-sync', function() {
 gulp.task('scripts', function () {
   return gulp.src([
     'node_modules/jquery/dist/jquery.min.js',
+    'node_modules/selectize/dist/js/standalone/selectize.min.js',
     'node_modules/angular/angular.min.js',
-    'node_modules/selectize/dist/main/standalone/selectize.min.js',
     'node_modules/leaflet/dist/leaflet.js',
     'node_modules/angular-simple-logger/dist/angular-simple-logger.min.js',
     'node_modules/ui-leaflet/dist/ui-leaflet.min.js',
     'node_modules/bootstrap/dist/main/bootstrap.min.js',
     'node_modules/angular-selectize2/dist/selectize.js',
     'node_modules/sweetalert/dist/sweetalert.min.js',
-    './src/app.module.js',
-    './src/main/*.js'
+    './app/app.module.js',
+    './app/main/*.js'
   ])
     .on('error', console.log)
     .pipe(concat('build.js'))
@@ -49,7 +48,7 @@ gulp.task('styles', function () {
     'node_modules/selectize/dist/css/selectize.default.css',
     'node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css',
     'node_modules/sweetalert/dist/sweetalert.css',
-    'src/assets/css/*.css'
+    'app/assets/css/*.css'
   ])
     .on('error', console.log)
     .pipe(autoprefixer({
@@ -63,8 +62,8 @@ gulp.task('styles', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch(['./src/assets/css/*.css'], ['styles']);
-  gulp.watch(['./src/*.js', './src/main/*.js'], ['scripts']);
+  gulp.watch(['./app/assets/css/*.css'], ['styles']);
+  gulp.watch(['./app/*.js', './app/main/*.js'], ['scripts']);
 });
 
 gulp.task('clean', function() {
