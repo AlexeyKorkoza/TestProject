@@ -8,6 +8,8 @@ mainService.$inject = ["$http"];
 
 function mainService($http) {
 
+  var urlServer = "http://localhost:8080/";
+
   var service = {
     getPlaces: getPlaces,
     getTypes: getTypes,
@@ -18,7 +20,7 @@ function mainService($http) {
 
   function getPlaces() {
     return $http({
-      url: '',
+      url: urlServer,
       method: 'post',
       data: {
         'allPlaces': 'allPlaces'
@@ -28,7 +30,7 @@ function mainService($http) {
 
   function getTypes() {
     return $http({
-      url: '',
+      url: urlServer,
       method: 'post',
       data: {
         'allTypes': 'allTypes'
@@ -38,7 +40,7 @@ function mainService($http) {
 
   function getByType(type) {
     return $http({
-      url: '',
+      url: urlServer,
       method: 'post',
       data: {
         'type': type
