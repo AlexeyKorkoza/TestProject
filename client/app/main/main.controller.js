@@ -9,9 +9,9 @@ mainCtrl.$inject = ["mainService"];
 function mainCtrl(mainService) {
 
   var vm = this;
-  vm.types = null;
-  vm.select = null;
-  vm.places = null;
+  vm.types = [];
+  vm.select = [];
+  vm.places = [];
   vm.getAllTypes = getAllTypes;
   vm.getAllPlaces = getAllPlaces;
   vm.getByType = getByType;
