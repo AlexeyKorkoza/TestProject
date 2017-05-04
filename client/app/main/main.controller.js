@@ -84,12 +84,10 @@ function mainCtrl(mainService) {
 
   function addPlaceInMap(places) {
     if (vm.types !== '') {
-      places.forEach(function (item) {
+      places.forEach(function (item, i) {
         var lat = parseFloat(item.lat);
         var lng = parseFloat(item.lng);
-        var nameOfImage = vm.types[item.id_type - 1].marker_img;
-        var typeOfPlace = vm.types[item.id_type - 1].name_type;
-        var id_place = item.id_place;
+        var nameOfImage = vm.types[item.id_type - 1].image;
         vm.markers["marker" + (i + 1)] = {
           lat: lat,
           lng: lng,
@@ -106,7 +104,7 @@ function mainCtrl(mainService) {
             iconSize: [54, 54],
             iconAnchor: [16, 37],
             popupAnchor: [0, -30],
-            iconUrl: "../assets/img/" + nameOfImage + ".png"
+            iconUrl: "app/assets/img/" + nameOfImage
           }
         };
       });

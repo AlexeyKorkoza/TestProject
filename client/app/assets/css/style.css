@@ -11,11 +11,10 @@ html, body {
   box-shadow: 0 5px 5px rgba(176, 176, 176, 0.4);
   padding: 20px;
   position: absolute;
-  z-index: 2;
+  z-index: 10;
 }
 
-#map {
-  width: 100%;
+.angular-leaflet-map {
   z-index: 1;
 }
 

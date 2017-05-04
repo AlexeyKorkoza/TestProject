@@ -7,23 +7,21 @@
     <title>Test Project</title>
     <link rel="stylesheet" type="text/css" href="build/build.css">
 </head>
-<body>
+<body ng-controller="mainCtrl as vm">
 
-<div ng-controller="mainCtrl as vm">
-    <div class="form-group" id="select">
-        <div class="row">
-            <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4">
-                <selectize config='vm.myConfig'
-                           ng-disabled='disable'
-                           ng-change="vm.getByType(type)"
-                           options='vm.select'
-                           ng-model="vm.type">
-                </selectize>
-            </div>
+<div class="form-group" id="select">
+    <div class="row">
+        <div class="col-xs-4 col-lg-4 col-md-4 col-sm-4">
+            <selectize config='vm.myConfig'
+                       ng-disabled='disable'
+                       ng-change="vm.getByType(type)"
+                       options='vm.select'
+                       ng-model="vm.type">
+            </selectize>
         </div>
     </div>
-    <leaflet lf-center="vm.grodno" markers="vm.markers" height="100%" width="100%"></leaflet>
 </div>
+<leaflet lf-center="vm.grodno" markers="vm.markers" height="100%" width="100%"></leaflet>
 
 <script src="build/build.js"></script>
 
