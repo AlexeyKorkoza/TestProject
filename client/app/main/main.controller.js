@@ -12,6 +12,7 @@ function mainCtrl(mainService) {
   vm.types = [];
   vm.select = [];
   vm.places = [];
+  vm.group_markers = [];
   vm.getAllTypes = getAllTypes;
   vm.getAllPlaces = getAllPlaces;
   vm.getByType = getByType;
@@ -92,6 +93,7 @@ function mainCtrl(mainService) {
           lat: lat,
           lng: lng,
           focus: false,
+          group: 'vm.group_markers',
           draggable: false,
           message: '<b>"' +
           item.name_place +

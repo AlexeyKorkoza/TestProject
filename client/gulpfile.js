@@ -31,6 +31,7 @@ gulp.task('scripts', function () {
     'node_modules/bootstrap/dist/main/bootstrap.min.js',
     'node_modules/angular-selectize2/dist/selectize.js',
     'node_modules/sweetalert/dist/sweetalert.min.js',
+    'node_modules/leaflet.markercluster/dist/leaflet.markercluster.js',
     './app/app.module.js',
     './app/main/*.js'
   ])
@@ -48,6 +49,7 @@ gulp.task('styles', function () {
     'node_modules/selectize/dist/css/selectize.default.css',
     'node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css',
     'node_modules/sweetalert/dist/sweetalert.css',
+    'node_modules/leaflet.markercluster/dist/*.css',
     'app/assets/css/*.css'
   ])
     .on('error', console.log)
