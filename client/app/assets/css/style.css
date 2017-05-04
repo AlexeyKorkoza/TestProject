@@ -1,5 +1,6 @@
 html, body {
   height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
   overflow-y: hidden;
@@ -20,22 +21,4 @@ html, body {
 
 .leaflet-top{
   top: 90px !important;
-}
-
-.leaflet-routing-container{
-  display: none !important;
-}
-
-.getDirectionBtn{
-  margin: 10px 0 0 0;
-  padding: 10px 7px;
-  border-radius: 5px;
-  background: green;
-  color: #fff;
-  border: none;
-  font-size: 12px;
-}
-
-.leaflet-default-icon-path{
-  background-image:url(https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.2/images/marker-icon.png) !important;
 }
